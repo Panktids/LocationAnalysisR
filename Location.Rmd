@@ -1,0 +1,48 @@
+---
+title: "HW5 notebook"
+output:
+  html_document:
+    df_print: paged
+---
+```{r}
+#Loading the packages
+library("tmap")
+library("tmaptools")
+library("rgdal")
+library("sp")
+library("osmdata")
+library("OpenStreetMap")
+library("osmar")
+library("raster")
+#Reading the datasource into var object
+var<-readOGR(dsn="C:/ass5",layer="Locations",verbose = FALSE)
+#Reading datasource in var1 object for its use in step 4
+var1<-readOGR(dsn="C:/ass5",layer="Locations",verbose = FALSE)
+#Retrieving bounding box from Spatial data var and storing it into object v1
+v1<-bbox(var)
+#Reads open street map vectorized points from v1
+var<-read_osm(v1, type="osm")
+
+#Draws a raster with shape points of 9 locations of color red
+tm_shape(var)+tm_raster()+tm_shape(var1)+tm_dots(size=0.5,palette = "RdBu",col = "red")
+
+```
+```{r}
+
+#Loading the package
+library("ggmap")
+library("PBSmapping")
+#Importing Shape file into var object
+var<-importShapefile("C:/ass5/Locations")
+#Turns an object var into Dataframe, created for last step
+var1<-as.data.frame(var)
+#Turns an object var into Dataframe
+var<-as.data.frame(var)
+#Loading a map by passing location as longitude and latitude and storing it in var
+var<-get_map(location= c(lon=-118.288,lat=34.025),zoom = 15)
+#ggmap is for ploting raster object produced by get_map with scatterplots created by geom_point
+ggmap(var)+geom_point(data=var1,aes(x=X, y=Y))
+
+
+```
+
